@@ -1,0 +1,11 @@
+---
+- name:  restart server
+  hosts: "nh"
+  gather_facts: False
+  tasks:
+    # async command: http://docs.ansible.com/ansible/playbooks_async.html
+    - name:  restart server
+      command: /home/haier/bin/restart.sh chips
+      async: 600
+      poll: 0
+      

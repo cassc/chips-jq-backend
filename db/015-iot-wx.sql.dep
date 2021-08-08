@@ -1,0 +1,42 @@
+-- add iot weixin
+
+use okok;
+create table csb_iotwx_product (
+id int unsigned not null primary key auto_increment,
+product_id varchar(32) not null
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table csb_iotwx_device (
+id int unsigned not null primary key auto_increment,
+device_id varchar(32) not null,
+
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- okok health mp weixin
+create table csb_mp_weixin (
+id int unsigned not null primary key auto_increment,
+openid varchar(32) unique not null,
+unionid varchar(32) not null,
+nickname varchar(128) character set utf8mb4 collate utf8mb4_unicode_ci null comment '昵称',
+sex tinyint not null comment '0：未知，1：男，2：女',
+city varchar(64) null,
+province varchar(64) null,
+subscribe tinyint not null comment '0,未关注，1已关注',
+`language` varchar(32) comment '用户语言',
+`headimgurl` varchar(256) comment '用户头像',
+subscribe_time int unsigned comment '关注时间，单位秒',
+remark varchar(128) character set utf8mb4 collate utf8mb4_unicode_ci null comment '备注',
+groupid int unsigned comment '用户组ID'
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 collate  utf8mb4_unicode_ci;
+
+-- link to okok health mp weixin
+-- create table csb_account_weixin(
+-- id int unsigned not null primary key auto_increment,
+-- openid varchar(32) not null,
+-- unionid varchar(32) not null,
+-- src enum('app','mp') not null, -- fixed with app
+-- a_uuid varchar(64) unique not null,
+-- constraint fk_aw_auuid foreign key (a_uuid) references hs_account(a_uuid)
+-- )  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+

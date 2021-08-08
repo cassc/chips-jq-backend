@@ -1,0 +1,2 @@
+GRANT ALL ON *.* TO 'chenli'@'%' IDENTIFIED BY 'chenli123456';
+FLUSH PRIVILEGES;

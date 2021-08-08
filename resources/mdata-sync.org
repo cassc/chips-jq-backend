@@ -1,0 +1,86 @@
+#+OPTIONS: ^:nil
+
+** 同步表设计
+*** roleid,mtype,lastsync, start, end
+ #+BEGIN_SRC csv
+      roleid, mtype, lastsync, start, end
+      2232, weight, 102, 6, 8
+      2232, weight, 108, 2, 4
+      2232, bp, 100, 2, 8
+ #+END_SRC
+*** 可能出现的情况
+    - 同步表可能出现的数据<<sample-mdata-sync-rows>>对应的同步时间线
+ #+BEGIN_SRC
+      weight      ----[w0-ls0---w1)--------[ws---ls1-----e)
+      bp          -[b0--ls2--b1)--------[bs-----ls3------e)
+      bsl         -[g0--ls4--g1)----------[gs---ls5------e)
+ #+END_SRC
+** 登录时获取与同步
+*** 初次进入APP调用GET<<get>>获取
+    - 最近initCntMax(1000)条数据，
+    - 如果最早数据仍在initMonthMax(2)个月内，则继续循环获取
+ #+BEGIN_SRC csv
+      start = long.max;
+      end = now;
+      threshStart = now - 2*month;
+      cnt= 1000;
+      mtype=bp,weight,bsl;
+      while (start > threshStart){
+        getMdata(end, cnt, mtype,roleId);
+        update: end, start;
+      }
+ #+END_SRC
+    - 此时同步时间线应该是这样：(ls0为上面循环中，服务器返回的lasync的最小值）
+ #+BEGIN_SRC csv
+      weight      -------------------------[s---ls0-----e)
+      bp          -------------------------[s---ls0-----e)
+      bsl         -------------------------[s---ls0-----e)
+ #+END_SRC
+*** 同步策略：按roleid与类别mtype同步。使用上面的表设计，
+    - 以同步weight为例，POST参数为，
+ #+BEGIN_SRC csv
+      mtype: weight
+      start: ws
+      end: currentTime
+      lastsync: ls1
+ #+END_SRC
+    - 如此同步所有类别后，表结果应该由[[sample-mdata-sync-rows][同步表可能的数据]]变为
+ #+BEGIN_SRC csv
+      weight      ----[w0-ls0---w1)--------[ws---ls6-----ne)
+      bp          -[b0--ls2--b1)--------[bs-----ls6------ne)
+      bsl         -[g0--ls4--g1)----------[gs---ls6------ne)
+ #+END_SRC
+      即各类别的最近一条同步记录的lastsync与end有更新
+*** 更新同步表<<update-msync>>
+    - 合并时间段：下面的同步记录合并后为[w0-lsm---w5),其中lsm=min(ls0,ls1,ls2)
+ #+BEGIN_SRC csv
+      weight      ----[w0-ls0---w1)-------------------------
+      weight      -------[w2----ls1---w3)-------------------
+      weight      ---------------[w4-ls2---w5)--------------
+ #+END_SRC
+    - 增加时间段：时间段不连续时，增加记录即可
+** 动态列表
+*** 特点
+    - 显示所有类别
+    - 类别在不同的app有不一样
+    - 用户可定义显示的类别
+*** 下翻页时，本地查询时加上时间条件measure_time >= [[s][s]]
+    - 若当前数据的最小时间（mstart<<mstart>>)在同步表的最近时间段内(s<<s>>,e)，其中s为max(ws,bs,gs)。则显示本地数据
+    - 若[[mstart][mstart]]等于[[s][s]]，\\
+      -- 有网络，则[[get][调用GET]]获取数据，并[[update-msync][更新同步表]];\\
+      -- 无网络则提示网络问题
+** 动态报告（由动态列表点击进入）
+*** 特点
+    - 显示一个类别
+    - 向时间线的前/后取N条数据
+*** 同步相关操作建议：
+    - 新数据存入本地
+    - 需要[[update-msync][更新同步表]]
+** 日、周列表（由趋势图点击进入）
+*** 特点
+    - 显示一个类别
+    - 显示的时间段不连续的可能性大，是同步表时间段不连续的主要来源
+*** 同步相关操作建议：
+    - 数据存入本地，
+    - 周以上范围的数据才去[[update-msync][更新同步表]]
+

@@ -1,0 +1,237 @@
+{:bd-appid    "Q6wCVmIzIVyzMyaJMM1MNA" ;; 推送类别的appid, 只用于区分推送来源服务器，不能用于区分app
+ ;; 服务器端口
+ :host        "127.0.0.1"
+ :port        3333
+ :instance-id "remote-dev"
+
+ ;; 内网测试时写IP地址最后一段。 线上环境设为nil
+ :testing-id 12827
+
+
+ ;; 日志级别
+ :log-level :info
+
+ ;; 日志文件
+ :log-file "local-chips.log"
+
+ :core-db {:password            "",
+           :classname           "com.mysql.jdbc.Driver",
+           :subprotocol         "mysql",
+           :user                "",
+           :idle-timeout        30000
+           :max-pool-size       10
+           :connection-init-sql "SET names utf8mb4"
+           :subname             "//127.0.0.1:3306/nh?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8"}
+
+ :admin-db {:password            "",
+            :classname           "com.mysql.jdbc.Driver",
+            :subprotocol         "mysql",
+            :user                "",
+            :idle-timeout        30000
+            :max-pool-size       10
+            :connection-init-sql "SET names utf8mb4"
+            :subname             "//127.0.0.1:3306/mok?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8"}
+
+ ;; 不为nil时，会从此数据库合并用户数据
+ :haier-db-source nil
+
+ :fe-db {:password            "",
+         :classname           "com.mysql.jdbc.Driver",
+         :subprotocol         "mysql",
+         :user                "",
+         :idle-timeout        30000
+         :max-pool-size       10
+         :connection-init-sql "SET names utf8mb4"
+         :subname             "//127.0.0.1:3306/fe?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8"}
+
+ :email-sender {:smtp-host "smtp.exmail.qq.com"
+                :smtp-port 465
+                :smtp-user ""
+                :smtp-pass ""
+                :from      ""}
+
+ :redis {:pool {}
+         :spec {:host     "127.0.0.1"
+                :port     6379
+                :db       0
+                :password ""}}
+
+ ;; cs-token 有效期（小时）
+ :token-valid-hours        8760
+ :max-token-count-per-user 10
+
+ ;; 服务器异常信息接收者(需要配置上面的email-sender)
+ :error-handling {:email-receiver [""]}
+
+ ;; 开放路径。允许越过cs-app-id, cs-token检查的路径，可以是regex或string
+ :allowed-urls #{"/pub/yl/notify" "/pub/kjt/paysuccess" "/pub/kjt/notify" "/doc" #"/doc/\w+" "/cds" #"^/file/\w+[\.]*\w*$" #"/latestapp/.*" #"/dev-resources/.*" #"/icon/\w+" #"/public/file/\w+" #"^/provider/.*" "/favicon.ico" "/1d389/iotwx" "/prof/score" #"/haier/pull/\d+" #"/apkdl/\w+/\d+" "/public/bdcategories" #"/gen/*" #"/product/\d+" #"/product/\d+/\w+" #"/docmodified/\d+" "/csalgo" "/banner" #"/article/*" #"/pv/buid/.*" #"/res/\w+" "/oss/sts"}
+
+ ;; 公司logo目录，确保执行本应用的用户有读写权限
+ :public-logos "/var/www/public/haier/logo"
+
+ ;; 用户头像，确保执行本应用的用户有读写权限
+ :user-logos "/var/www/public/haier/chips/icon"
+
+
+ ;; 禁用用户名。备用
+ :reserved-names #{"register" "login" "pages" "logout" "password" "username" "user"
+                   "about" "help" "doc" "docs" "images" "js" "css" "maven" "api"
+                   "download" "create" "new" "upload" "contact" "group" "groups"
+                   "browse" "status" "search" "email" "development" "admin" "administrator"
+                   "root" "webmaster" "profile" "settings" "options" "index" "files"}
+
+
+ ;; RPC client
+ :thrift-client {:bind     "localhost"
+                 :port     9011
+                 :protocol :binary
+                 :pooled?  false}
+
+ ;; company_id to [email] signature
+ :signatures {:default "渐轻"}
+
+ :email-rate-limit 30000
+
+ :enable-time-logging             true
+ :disable-logging-params-with-uri #{}
+ :log-app-root                    "/opt/apps/logs/app/"
+
+ :static-resources "https://jianqing.oss-cn-beijing.aliyuncs.com/" ;; "http://ot0l3z06r.bkt.clouddn.com/" ;;"/var/www/public/haier/res"
+
+ :refresh-active-users-for #{1}
+ :moments-pagesize         20
+
+ :open-haier {:client-id     "jianqing"
+              :client-secret "7uf2_ttkpcfmrx"
+              ;;:base-url "https://taccount.haier.com"
+              :base-url      "http://account-api.haier.net"}
+
+ :article-root       "/var/www/public/haier/broadcast/article"
+ :mqtt               {:host      "ssl://zncht.haier.net:7333"
+                      :username  "adm"
+                      :password  "#{Exfc4U#a(P"
+                      :cafile    "/opt/apps/mqtt-cert/ca.crt"
+                      :client-id "chps-remote-ncern"}
+ :mdata-push-enabled false
+
+ ;; set to nil to disable haiji push
+ :haiji {"Q31S"    {:typeid       "201c9085246140741502254dd8053800000039571779c26e5182e5b2ed309140"
+                    :device-type  "15002008"
+                    :title        "Q31S"
+                    :sys-id       "SV-JQQ31S306-0000"
+                    :sys-key      "27a9cc5cd656ff60f77f313fd3ddb888"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "Q31"     {:sys-id       "SV-JQQ31296-0000"
+                    :sys-key      "f337b5e884b456451f547d35383cb815"
+                    :typeid       "201c908524614074150247b361cd9f00000048c270e490a7872df8844e851440"
+                    :device-type  "15002004"
+                    :title        "Q31"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "Q7"      {:title        "Q7"
+                    :sys-id       "SV-JQQ7309-0000"
+                    :sys-key      "f554d22641e9da7e37855e5438162957"
+                    :typeid       "201c9085246140741502ea1020faea000000807c6cfe51ac568cc08820faac40"
+                    :device-type  "15002005"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "Q7S"     {:title        "Q7S"
+                    :sys-id       "SV-JQQ7S305-0000"
+                    :sys-key      "abd43a28e5308efabb97ee78d755b57c"
+                    :typeid       "201c9085246140741502254dd8053800000074c097a16ab32a570b577657ec40"
+                    :device-type  "15002009"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "Q81"     {:title        "Q81"
+                    :sys-id       "SV-JQQ81308-0000"
+                    :sys-key      "347b958c5774d306ea24c367e013fc3b"
+                    :typeid       "201c9085246140741502254dd80538000000082dfdd82ffb72250544e0940240"
+                    :device-type  "15002006"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "Q1S"     {:title        "Q1S"
+                    :sys-id       "SV-JQQ1S307-0000"
+                    :sys-key      "5ff277496144acbe6287b56051c4810d"
+                    :typeid       "201c9085246140741502254dd805380000002c917aeed9df9c1803d7251b7c40"
+                    :device-type  "15002007"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "S260"    {:title        "S260"
+                    :sys-id       "SV-JQS260304-0000"
+                    :sys-key      "05e3de06d1f5154bfc3c64118e1dc387"
+                    :typeid       "201c9085246140741502254dd805380000007b54a25f32cf2a86c3df155a9d40"
+                    :device-type  "1500200A"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "X328黑"  {:title        "X328"
+                    :sys-id       "SV-JQX328H303-0000"
+                    :sys-key      "4826fa766175649fe49c73e7cfd88286"
+                    :typeid       "201c9085246140741502254dd8053800000046323fadd748205bffad907b0e40"
+                    :device-type  "1500200B"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "X228C黑" {:title        "X228C"
+                    :sys-id       "SV-JQX228CH302-0000"
+                    :sys-key      "269ebd634d018a65cdc2e531fe4b027e"
+                    :typeid       "201c9085246140741502254dd80538000000648c6fca6341e630a45465094140"
+                    :device-type  "1500200D"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "X228黑"  {:title        "X228"
+                    :sys-id       "SV-JQX228H301-0000"
+                    :sys-key      "bacb90f748f7557756098a4d9ca975fb"
+                    :typeid       "201c9085246140741502254dd80538000000f56565c909883c8b68282ca75440"
+                    :device-type  "1500200C"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}
+         "Q1"      {:title        "Q1"
+                    :sys-id       "SV-JQQ1293-0000"
+                    :sys-key      "5d717962c32b70ba23c1c96a141ae7fe"
+                    :typeid       "201c90852461407415028198f7efe8000000283135736face64fa53e55a8f240"
+                    :device-type  "15002003"
+                    :data-gateway "https://gw.haigeek.com/std3rddatagw/datagateway"
+                    :sys-version  "00.03.01.17800"}}
+
+ :aliyun     {:endpoint          "https://oss-cn-beijing.aliyuncs.com"
+              :bucket-name       "jianqing"
+              :access-key-id     ""
+              :access-key-secret ""
+              :base-url          "https://jianqing.oss-cn-beijing.aliyuncs.com/"}
+ :aliyun-sts {:endpoint          "https://oss-cn-beijing.aliyuncs.com"
+              :access-key-id     ""
+              :access-key-secret ""
+              :role-arn          ""
+              :policy            "{\"Statement\": [{\"Action\": [\"oss:*\"], \"Effect\": \"Allow\", \"Resource\": [\"acs:oss:*:*:*\"]}], \"Version\": \"1\"}"
+              :expire-secs       3600}
+ :kjt        {:mchid      "200003041770"                                ;; zent "200001725745"
+              :kjt-pubkey ""
+              :rsa        {:pubkey  ""
+                           :privkey ""}
+              :gateway    "https://gateway.kjtpay.com/recv.do"          ;; 正式：https://gateway.kjtpay.com/recv.do 准生产：https://zgateway.kjtpay.com/recv.do 测试：https://c1gateway.kjtpay.com/recv.do
+              :notify-url "http://45.35.13.168:8080/pub/kjt/notify"     ;; https://hrznc.haier.net/pub/kjt/notify
+              :return-url "http://45.35.13.168:8080/pub/kjt/paysuccess" ;; https://hrznc.haier.net/pub/kjt/paysuccess
+              }
+
+ :yl          {:gateway-url "https://qr-test2.chinaums.com/netpay-route-server/api/"
+               :mid         "898310148160568"
+               :tid         "00000001"
+               :instMid     "APPDEFAULT"
+               :msgSrc      "WWW.TEST.COM"
+               :msgSrcId    "3194"
+               :key         ""
+               :notify-url  "http://45.35.13.168:8080/pub/yl/notify" ;; https://hrznc.haier.net/pub/yl/notify
+               }
+ :faq-html    "http://47.93.10.106:8080/faq/question.html"
+ :refund-time {:hour 13 :minute 20}
+
+ :od-standard {:x-range       [-9999, -20, -10, 10, 20, 30, 50, 9999]
+               :x-title       ["消瘦", "偏瘦", "标准", "超重", "轻度", "中度", "重度"]
+               :x-description ["你的理想体重是%s，现在的你太瘦弱了，建议每天3餐，保证必要的营养摄入，并针对自身体质特征进行调养，增强身体的消化吸收力，充分吸收食物的营养，让多余的能量转化为肌肉和脂肪，以此来得到体重的增长。",
+                               "你的理想体重是%s，你的身体偏瘦，建议您通过少吃多餐来补充能量，多补充些蛋白质，让多余的能量转化为肌肉和脂肪，同时均衡营养，坚持锻炼，身材会更好。",
+                               "你的体重在合理的范围内，注意保持，规律作息，补充足够的水分，保持良好的基础代谢。饭后走一走是保持身材的秘方。",
+                               "你的理想体重是%s，你的身体超重了，请注意调整自己的饮食习惯，减少高油高热量食物的摄入，同时每周锻炼2-3次，可以适当进行一些力量训练来塑形，很快就能穿衣显瘦、脱衣有肉了。",
+                               "你的理想体重是%s，你的身体轻度肥胖了，腰部赘肉肯定不少吧，建议您少吃油炸、膨化食品和碳酸饮料，尽量选择一些低脂蛋白质，如牛肉、鸡脯肉等，多吃蔬菜、杂粮，同时每周保持2-3次的有氧运动，消耗体内顽固脂肪，提高新陈代谢，控制饮食是你成功减肥的关键。",
+                               "你的理想体重是%s，你属于中度肥胖，已经严重超标，过胖易导致三高、脂肪肝、糖尿病等代谢类疾病。请减少高热量、高油脂食物摄入，并保持定期运动习惯，努力恢复健康身体。",
+                               "你的理想体重是%s，你属于重度肥胖。您的体质容易出现打鼾、月经失调、嗜睡等问题，三高、脂肪肝、糖尿病也容易找到你，您真的急需减肥了。"]}
+ }

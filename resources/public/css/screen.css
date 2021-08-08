@@ -1,0 +1,26 @@
+html,
+body {
+  overflow-y: scroll;
+  font-size:medium;
+}
+
+/* code{ */
+/*   font-family: monaco,Consolas, "Liberation Mono", Menlo, Courier, monospace; */
+/* } */
+
+h1, h2, h3, h4, h5 {font-weight: bold;}
+.markdown-body pre, .markdown-body code {border: none;}
+.form-control {width:400px;}
+
+div.title-panel {
+  position:fixed;
+  top:10px;
+  bottom:10px;
+  left:20px;
+  width:350px;
+  overflow:scroll;
+}
+
+ul.toc {
+  font-family:"Microsoft Yahei",微软雅黑;
+}
